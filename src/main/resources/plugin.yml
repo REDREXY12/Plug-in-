@@ -1,0 +1,14 @@
+name: YouTuberRecs
+version: 1.0.0
+main: com.youtuberrecs.YouTuberRecs
+api-version: '1.21'
+description: Basic named NPC-like mobs, follow/circle/attack commands, and persistent kits.
+commands:
+  npc:
+    description: YouTuber Recs commands
+    usage: /npc
+    aliases: [ytrecs]
+permissions:
+  youtuberrecs.admin:
+    description: Use all YouTuber Recs commands
+    default: op
