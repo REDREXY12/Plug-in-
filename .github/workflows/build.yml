@@ -1,37 +1,25 @@
-name: Build YouTuberRecs Plugin
-
-on:
-workflow_dispatch:
-push:
-branches:
-- main
-paths:
-- 'src/**'
-- 'build.gradle'
-- 'settings.gradle'
-- '.github/workflows/build.yml'
-
-permissions:
-contents: read
-
+name: Build YouTuberRecs
+on: [push, workflow_dispatch]
 jobs:
 build:
 runs-on: ubuntu-latest
-
 steps:
   - name: Checkout repository
     uses: actions/checkout@v4
 
-  - name: Set up Java
+  - name: Setup Java
     uses: actions/setup-java@v4
     with:
       distribution: temurin
       java-version: '21'
 
   - name: Build plugin
-    run: gradle --no-daemon build
+    run: |
+      sudo apt-get update
+      sudo apt-get install -y gradle
+      gradle --no-daemon build
 
-  - name: Upload plugin JAR
+  - name: Upload plugin
     uses: actions/upload-artifact@v4
     with:
       name: YouTuberRecs
