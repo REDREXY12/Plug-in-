@@ -1,16 +1,25 @@
 name: Build YouTuber Recs Plugin
+
 on:
 workflow_dispatch:
 push:
 branches:
 - main
+paths:
+- 'src/**'
+- 'build.gradle'
+- 'settings.gradle'
+- '.github/workflows/build.yml'
+
 permissions:
 contents: read
+
 jobs:
 build:
 runs-on: ubuntu-latest
+
 steps:
-  - name: Download repository
+  - name: Checkout repository
     uses: actions/checkout@v4
 
   - name: Set up Java 21
@@ -18,21 +27,17 @@ steps:
     with:
       distribution: temurin
       java-version: '21'
-      cache: gradle
 
-  - name: Check project files
-    run: |
-      echo "Checking Java source..."
-      find . -name "YouTuberRecs.java"
-      echo "Checking plugin.yml..."
-      find . -name "plugin.yml"
+  - name: Set up Gradle
+    uses: gradle/actions/setup-gradle@v4
 
-  - name: Build plugin
-    run: gradle --no-daemon clean build
+  - name: Build plugin JAR
+    run: gradle clean build --no-daemon
 
-  - name: Upload compiled JAR
+  - name: Upload plugin JAR
     uses: actions/upload-artifact@v4
     with:
       name: YouTuberRecs-JAR
       path: build/libs/*.jar
       if-no-files-found: error
+      retention-days: 14
